@@ -14,29 +14,41 @@
                 user: elastic
                 password: changeme
 
-        2. import log, way1
+        2. import log & create index pattern
 
-                - way1, by file upload (100M limited, no defined column name)
+                1. import by console to tcp 
+                
+                        - good
+                        this way, column names are defined in ./pipeline/logstash.conf        
 
-                        1. import (important to set @timestamp column)
+                        - how
+                        cat ./sample-logs/artifactory-request.log | nc -c localhost 5001
 
-                                ui > home > upload a file > override settings > time field > select the column has date value e.g. column1 > change the column name to @timestamp
-                                
-                        2. create index pattern
-                        
-                                click import > input index pattern name e.g. upload-01
+                2. create index by import
+                
+                        stack management > saved object > import > select ./kibana/export.ndjson (will create index unified-artifactory)
+                
+                3. if create index directly
+                
+                        import log first, then you can choose the name for time field (default only can choose @timestamp)
+                        ui > Discover > enter unified-artifactory (default is logstash-*) > next step > select time field e.g. timestamp (check the name from ./pipeline/logstash.conf) as time
 
-                - way2, by console
+                4. if by file upload (import log & create index)
 
-                        1. import 
-                        
-                                cat ./sample-logs/access-request.log | nc -c localhost 5001
+                        - bad
+                        100M limited, no defined column name
 
-                        2. create index pattern
+                        - how
+                        ui > home > upload a file > override settings > time field > select the column has date value e.g. column1 > click import > create (input if exists) index pattern name e.g. unified-artifactory
 
-                                ui > Discover > enter logstash-* > next step > select request.datelog as time
+                        - about time field
+                        if to use default timeline chart in Discover page 
+                        change the column name to @timestamp
 
-        3. start to use
+                        if to use index from the imported saved object
+                        change the column name to timestamp, and change other column names ...
+                
+        4. start to use
 
                 ui > Discover
                 ui > Visualize
