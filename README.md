@@ -1,8 +1,9 @@
 
-- original project
+# EXK (X = fluentd or logstash)
+
+- original elk project
 
         https://github.com/deviantony/docker-elk
-        also check ./README-original.md
 
 - usage
 
@@ -16,24 +17,28 @@
 
         2. import log & create index pattern
 
-                1. import by console to tcp 
-                
-                        - good
-                        this way, column names are defined in ./pipeline/logstash.conf        
+                1. if fluentd
 
-                        - how
+                        vi docker-compose.yaml
+                        JF_PRODUCT_DATA_INTERNAL: "/Users/kyle/Downloads/efk-log/"
+                
+                2. if logstash
+                
+                        this way, column names are defined in ./pipeline/logstash.conf        
                         cat ./sample-logs/artifactory-request.log | nc -c localhost 5001
 
-                2. create index by import
+        3. create index pattern
+
+                1. create index by import
                 
-                        stack management > saved object > import > select ./kibana/export.ndjson (will create index unified-artifactory)
+                        stack management > saved object > import > select ./kibana/kibana_dashboard_v1.ndjson (will create index unified-artifactory)
                 
-                3. if create index directly
+                2. if create index directly
                 
                         import log first, then you can choose the name for time field (default only can choose @timestamp)
                         ui > Discover > enter unified-artifactory (default is logstash-*) > next step > select time field e.g. timestamp (check the name from ./pipeline/logstash.conf) as time
 
-                4. if by file upload (import log & create index)
+                3. if by file upload
 
                         - bad
                         100M limited, no defined column name
@@ -52,8 +57,13 @@
 
                 ui > Discover
                 ui > Visualize
-                ui > home > add data > sample > Sample web logs
 
-                
+- todo
+
+        1. make it ready to connect to live artifactory (on the same host) to have metric
+        2. config another fluentd for xray logs ? 
+
+        
+
 
 

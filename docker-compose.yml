@@ -27,31 +27,53 @@ services:
     networks:
       - elk
 
-  logstash:
+  fluentd:
     build:
-      context: logstash/
+      context: fluentd/
       args:
         ELK_VERSION: $ELK_VERSION
+        JF_PRODUCT_DATA_INTERNAL: "/opt/jfrog/artifactory/var"
+        ELASTIC_HOST: "elasticsearch"
+        ELASTIC_PORT: 9200
+        ELASTIC_USER: elastic
+        ELASTIC_PASSWORD: changeme
+        ELASTIC_SCHEME: http
+        ELASTIC_SSL_VERIFY: false
     volumes:
       - type: bind
-        source: ./logstash/config/logstash.yml
-        target: /usr/share/logstash/config/logstash.yml
-        read_only: true
-      - type: bind
-        source: ./logstash/pipeline
-        target: /usr/share/logstash/pipeline
-        read_only: true
-    ports:
-      - "5044:5044"
-      - "5001:5000/tcp"
-      - "5001:5000/udp"
-      - "9600:9600"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      # docker desktop > resources > file sharing > add below path
+        source: "/Users/kyle/Downloads/exk-log"
+        target: "/opt/jfrog/artifactory/var"
     networks:
       - elk
     depends_on:
       - elasticsearch
+
+  # logstash:
+  #   build:
+  #     context: logstash/
+  #     args:
+  #       ELK_VERSION: $ELK_VERSION
+  #   volumes:
+  #     - type: bind
+  #       source: ./logstash/config/logstash.yml
+  #       target: /usr/share/logstash/config/logstash.yml
+  #       read_only: true
+  #     - type: bind
+  #       source: ./logstash/pipeline
+  #       target: /usr/share/logstash/pipeline
+  #       read_only: true
+  #   ports:
+  #     - "5044:5044"
+  #     - "5001:5000/tcp"
+  #     - "5001:5000/udp"
+  #     - "9600:9600"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #   networks:
+  #     - elk
+  #   depends_on:
+  #     - elasticsearch
 
   kibana:
     build:
