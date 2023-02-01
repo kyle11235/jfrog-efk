@@ -42,7 +42,7 @@ services:
     volumes:
       - type: bind
       # docker desktop > resources > file sharing > add below path
-        source: "/Users/kyle/Downloads/exk-log"
+        source: "/Users/kyle/Downloads/exk-var"
         target: "/opt/jfrog/artifactory/var"
     networks:
       - elk
