@@ -20,8 +20,14 @@
                 1. if fluentd
 
                         vi docker-compose.yaml
-                        JF_PRODUCT_DATA_INTERNAL: "/Users/kyle/Downloads/efk-log/"
-                
+                        JF_PRODUCT_DATA_INTERNAL: "/Users/kyle/Downloads/exk-var"
+                        
+                        place logs in path $JF_PRODUCT_DATA_INTERNAL/log
+                        e.g.
+                        ./log/artifactory-request.log
+                        ./log/xxx-request.log
+                        ...
+
                 2. if logstash
                 
                         this way, column names are defined in ./pipeline/logstash.conf        
