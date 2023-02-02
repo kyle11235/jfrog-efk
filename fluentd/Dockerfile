@@ -1,9 +1,10 @@
 
-# FROM fluentd:v1.14-1
+FROM fluentd:v1.14-1
 
 # https://docs.fluentd.org/input/tail
 # From Fluentd v1.14.3, in_tail reads newly added files from head automatically even if read_from_head is false
-FROM fluentd:v1.14.3
+# FROM fluentd:v1.14.3-1.1
+#  ... exists in dockerhub but not found error
 
 # ARG & ENV all after FROM
 ARG JF_PRODUCT_DATA_INTERNAL

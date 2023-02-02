@@ -4,6 +4,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-service.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-service.log.pos"
   tag jfrog.rt.access.service
+  read_from_head true
   <parse>
     @type none
   </parse>
@@ -14,6 +15,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-service.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-service.log.pos"
   tag jfrog.rt.artifactory.service
+  read_from_head true
   <parse>
     @type none
   </parse>
@@ -24,6 +26,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/frontend-service.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/frontend-service.log.pos"
   tag jfrog.rt.frontend.service
+  read_from_head true
   <parse>
     @type none
   </parse>
@@ -34,6 +37,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/metadata-service.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/metadata-service.log.pos"
   tag jfrog.rt.metadata.service
+  read_from_head true
   <parse>
     @type none
   </parse>
@@ -44,6 +48,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-service.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-service.log.pos"
   tag jfrog.rt.router.service
+  read_from_head true
   <parse>
     @type none
   </parse>
@@ -74,6 +79,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-traefik.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-traefik.log.pos"
   tag jfrog.rt.router.traefik
+  read_from_head true
   <parse>
       @type multiline
       format_firstline /\d{4}-\d{1,2}-\d{1,2}/
@@ -87,6 +93,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-request.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-request.log.pos"
   tag jfrog.rt.access.request
+  read_from_head true
   <parse>
     @type regexp
     expression ^(?<timestamp>[^ ]*)\|(?<trace_id>[^\|]*)\|(?<remote_address>[^\|]*)\|(?<username>[^\|]*)\|(?<request_method>[^\|]*)\|(?<request_url>[^\|]*)\|(?<return_status>[^\|]*)\|(?<response_content_length>[^\|]*)\|(?<request_content_length>[^\|]*)\|(?<request_duration>[^\|]*)\|(?<request_user_agent>.+)$
@@ -98,6 +105,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-request.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-request.log.pos"
   tag jfrog.rt.artifactory.request
+  read_from_head true
   <parse>
     @type regexp
     expression ^(?<timestamp>[^ ]*)\|(?<trace_id>[^\|]*)\|(?<remote_address>[^\|]*)\|(?<username>[^\|]*)\|(?<request_method>[^\|]*)\|(?<request_url>[^\|]*)\|(?<return_status>[^\|]*)\|(?<response_content_length>[^\|]*)\|(?<request_content_length>[^\|]*)\|(?<request_duration>[^\|]*)\|(?<request_user_agent>.+)$
@@ -117,6 +125,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/frontend-request.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/frontend-request.log.pos"
   tag jfrog.rt.frontend.request
+  read_from_head true
   <parse>
     @type regexp
     expression ^(?<timestamp>[^ ]*)\|(?<trace_id>[^\|]*)\|(?<remote_address>[^\|]*)\|(?<username>[^\|]*)\|(?<request_method>[^\|]*)\|(?<request_url>[^\|]*)\|(?<return_status>[^\|]*)\|(?<response_content_length>[^\|]*)\|(?<request_content_length>[^\|]*)\|(?<request_duration>[^\|]*)\|(?<request_user_agent>.+)$
@@ -128,6 +137,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/metadata-request.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/metadata-request.log.pos"
   tag jfrog.rt.metadata.request
+  read_from_head true
   <parse>
     @type regexp
     expression ^(?<timestamp>[^ ]*)\|(?<trace_id>[^\|]*)\|(?<remote_address>[^\|]*)\|(?<username>[^\|]*)\|(?<request_method>[^\|]*)\|(?<request_url>[^\|]*)\|(?<return_status>[^\|]*)\|(?<response_content_length>[^\|]*)\|(?<request_content_length>[^\|]*)\|(?<request_duration>[^\|]*)\|(?<request_user_agent>.+)$
@@ -139,6 +149,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-request.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/router-request.log.pos"
   tag jfrog.rt.router.request
+  read_from_head true
   <parse>
     @type json
   </parse>
@@ -149,6 +160,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-access.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/artifactory-access.log.pos"
   tag jfrog.rt.artifactory.access
+  read_from_head true
   <parse>
     @type regexp
     expression /^(?<timestamp>[^ ]*) \[(?<trace_id>[^\]]*)\] \[(?<action_response>[^\]]*)\] (?<repo_path>.*) for client : (?<username>.+)/(?<ip>.+).$/
@@ -160,6 +172,7 @@
   path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-security-audit.log"
   pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/access-security-audit.log.pos"
   tag jfrog.rt.access.audit
+  read_from_head true
   <parse>
     @type regexp
     expression /^(?<timestamp>[^ ]*)\|(?<token_id>[^ ]*)\|(?<user_ip>[^ ]*)\|(?<user>[^ ]*)\|(?<logged_principal>[^ ]*)\|(?<entity_name>[^ ]*)\|(?<event_type>[^ ]*)\|(?<event>[^ ]*)\|(?<data_changed>.*)/
@@ -218,6 +231,7 @@
     <record>
       response_content_length_2 ${record["response_content_length"].to_f}
       request_content_length_2 ${record["request_content_length"].to_f}
+      request_duration_2 ${record["request_duration"].to_f}
     </record>
 </filter>
 
