@@ -7,6 +7,14 @@
 
 - usage
 
+        0. prepare logs
+
+                place logs in path e.g. 
+                /Users/kyle/Downloads/exk-var/log
+                ./log/artifactory-request.log
+                ./log/xxx-request.log
+                ...
+
         1. run (mac m1 ok)
 
                 docker-compose up
@@ -21,12 +29,6 @@
 
                         vi docker-compose.yaml
                         JF_PRODUCT_DATA_INTERNAL: "/Users/kyle/Downloads/exk-var"
-                        
-                        place logs in path $JF_PRODUCT_DATA_INTERNAL/log
-                        e.g.
-                        ./log/artifactory-request.log
-                        ./log/xxx-request.log
-                        ...
 
                 2. if logstash
                 
