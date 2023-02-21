@@ -2,9 +2,7 @@
 
 # EFK
 
-- Descrption
-
-        This project enables you to start the EFK platform with one click via docker compose to analyze JFrog logs or Support Bundle to understand the status of the system through pre-configured reports
+This project enables you to start the EFK platform with one click via docker compose to analyze JFrog logs or Support Bundle to understand the status of the system through pre-configured reports
 
 ## Preparation
 
@@ -30,7 +28,7 @@
 
 ![image info](./images/01-logpath.png)
 
-## installation
+## Installation
 
 1. Modify the path where the log is located
 
