@@ -1,3 +1,3 @@
 #!/bin/sh
 
-fluentd -v -c /fluentd/etc/fluent.conf.rt
+fluentd -v -c /fluentd/etc/fluent.conf.jfrog

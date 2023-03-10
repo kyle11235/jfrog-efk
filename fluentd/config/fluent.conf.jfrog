@@ -1,3 +1,6 @@
+
+### artifactory
+
 <source>
   @type tail
   @id access_service_tail
@@ -235,6 +238,128 @@
     </record>
 </filter>
 
+
+
+### xray
+<source>
+  @type tail
+  @id xray_server_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-server-service.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-server-service.log.pos"
+  tag jfrog.xray.server.service
+  read_from_head true
+  <parse>
+    @type none
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_persist_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-persist-service.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-persist-service.log.pos"
+  tag jfrog.xray.persist.service
+  read_from_head true
+  <parse>
+    @type none
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_indexer_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-indexer-service.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-indexer-service.log.pos"
+  tag jfrog.xray.indexer.service
+  read_from_head true
+  <parse>
+    @type none
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_analysis_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-analysis-service.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-analysis-service.log.pos"
+  read_from_head true
+  tag jfrog.xray.analysis.service
+  <parse>
+    @type none
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_router_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-service.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-service.log.pos"
+  read_from_head true
+  tag jfrog.xray.router.service
+  <parse>
+    @type none
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_router_traefik_tail
+  path "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-traefik.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-traefik.log.pos"
+  read_from_head true
+  tag jfrog.xray.router.traefik
+  <parse>
+      @type regexp
+      expression ^(?<timestamp>[^ ]*) \[(?<service_type>[^\]]*)\] \[(?<log_level>[^\]]*)\] \[(?<trace_id>[^\]]*)\] \[(?<class_line_number>.*)\] \[(?<thread>.*)\] -(?<message>.+)$
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_router_request_tail
+  path  "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-request.log"
+  pos_file "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-router-request.log.pos"
+  read_from_head true
+  tag jfrog.xray.router.request
+  <parse>
+    @type json
+  </parse>
+</source>
+<source>
+  @type tail
+  @id xray_request_tail
+  path  "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-request.log"
+  pos_file  "#{ENV['JF_PRODUCT_DATA_INTERNAL']}/log/xray-request.log.pos"
+  read_from_head true
+  tag jfrog.xray.xray.request
+  <parse>
+    @type regexp
+    expression ^(?<timestamp>[^|]*)\|(?<trace_id>[^|]*)\|(?<remote_address>[^|]++)\|(?<username>[^\|]*)\|(?<request_method>[^\|]*)\|(?<request_url>[^\|]*)\|(?<return_status>[^\|]*)\|(?<request_content_length>[^\|]*)\|(?<response_content_length>[^\|]*)\|(?<request_duration>[^\|]*)\|(?<request_user_agent>.*)$
+  </parse>
+</source>
+# STRIP COLOR CODES FROM SERVICE LOGS
+<filter jfrog.xray.**.service>
+  @type record_transformer
+  enable_ruby true
+  <record>
+    message ${record["message"].gsub(/\e\[([;\d]+)?m/, '')}
+  </record>
+</filter>
+# FIELD EXTRACT SERVICE LOG
+<filter jfrog.xray.**.service>
+  @type parser
+  key_name message
+  <parse>
+      @type multiline
+      format_firstline /\d{4}-\d{1,2}-\d{1,2}/
+      format1 /^(?<timestamp>[^ ]*) \[(?<service_type>[^\]]*)\] \[(?<log_level>[^\]]*)\] \[(?<trace_id>[^\]]*)\] \[(?<class_line_number>.*)\] \[(?<thread>.*)\] (?<message>.*)$/
+  </parse>
+</filter>
+<filter jfrog.**>
+  @type record_transformer
+  <record>
+    hostname "#{Socket.gethostname}"
+    log_source ${tag}
+  </record>
+</filter>
+
+
+### artifactory
+
 ###JFROG METRICS Plugin
 # <source>
 #   @type jfrog_metrics
@@ -273,7 +398,7 @@
 ########################
 # ELASTIC OUTPUT LOGS
 ########################
-<match jfrog.**>
+<match jfrog.rt.**>
   @type elasticsearch
   @id elasticsearch_logs
   host "#{ENV['ELASTIC_HOST']}"
@@ -283,6 +408,65 @@
   scheme "#{ENV['ELASTIC_SCHEME']}"
   ssl_verify "#{ENV['ELASTIC_SSL_VERIFY']}"
   index_name unified-artifactory
+  include_tag_key true
+  type_name fluentd
+  logstash_format false
+</match>
+#END ELASTIC OUTPUT
+
+
+### xray
+
+# ###JFROG METRICS Plugin
+# <source>
+#   @type jfrog_metrics
+#   @id metrics_http_jfrt
+#   tag jfrog.metrics.xray
+#   interval 5s
+#   metric_prefix 'jfrog.xray'
+#   jpd_url "#{ENV['JF_JPD_URL']}"
+#   username "#{ENV['JF_JPD_USER_NAME']}"
+#   apikey "#{ENV['JF_JPD_API_KEY']}"
+#   token "#{ENV['JF_JPD_TOKEN']}"
+#   target_platform "ELASTIC"
+# </source>
+
+
+# ########################
+# # ELASTIC OUTPUT METRICS
+# ########################
+# <match jfrog.metrics.**>
+#   @type elasticsearch
+#   @id elasticsearch_metrics
+#   host "#{ENV['ELASTIC_HOST']}"
+#   port "#{ENV['ELASTIC_PORT']}"
+#   user "#{ENV['ELASTIC_USER']}"
+#   password "#{ENV['ELASTIC_PASSWORD']}"
+#   scheme "#{ENV['ELASTIC_SCHEME']}"
+#   ssl_verify "#{ENV['ELASTIC_SSL_VERIFY']}"
+#   index_name unified-metrics-xray
+#   include_tag_key true
+#   type_name fluentd
+#   logstash_format false
+#   include_timestamp true
+# </match>
+# #END ELASTIC OUTPUT
+
+
+
+########################
+# ELASTIC OUTPUT LOGS
+########################
+<match jfrog.xray.**>
+  @type elasticsearch
+  @id elasticsearch
+  host "#{ENV['ELASTIC_HOST']}"
+  port "#{ENV['ELASTIC_PORT']}"
+  user "#{ENV['ELASTIC_USER']}"
+  password "#{ENV['ELASTIC_PASSWORD']}"
+  scheme "#{ENV['ELASTIC_SCHEME']}"
+  ssl_verify "#{ENV['ELASTIC_SSL_VERIFY']}"
+  index_name unified-xray
   include_tag_key true
   type_name fluentd
   logstash_format false

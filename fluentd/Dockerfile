@@ -39,7 +39,8 @@ RUN apk add --no-cache --update --virtual .build-deps \
 && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
 # copy fluentd configuration from host image
-COPY ./config/fluent.conf.rt /fluentd/etc/
+COPY ./config/fluent.conf.jfrog /fluentd/etc/
+
 # copy binary start file
 COPY entrypoint.sh /bin/
 

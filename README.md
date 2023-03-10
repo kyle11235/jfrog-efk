@@ -126,8 +126,21 @@ This project enables you to start the EFK platform with one click via docker com
 
 - todo
 
-        1. make it ready to connect to live artifactory (on the same host) to have metric
-        2. config another fluentd for xray logs ? 
+        - xray log
+
+                - error
+                unmatched_lines
+
+        - xray violation
+        
+                - via fluentd plugin (ruby gem)
+                https://github.com/jfrog/fluent-plugin-jfrog-siem
+
+                look into https://github.com/jfrog/fluent-plugin-jfrog-siem/tree/main/fluentd/plugins/input/fluent-plugin-jfrog-siem/lib/fluent/plugin
+
+
+
+
 
         
 

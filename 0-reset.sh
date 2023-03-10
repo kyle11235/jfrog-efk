@@ -2,7 +2,7 @@
 docker-compose down -v
 
 # solve issue that images not updated
-docker rmi exk-elasticsearch
-docker rmi exk-kibana
-docker rmi exk-fluentd
-docker rmi exk-logstash
+docker rmi jfrog-efk-elasticsearch
+docker rmi jfrog-efk-kibana
+docker rmi jfrog-efk-fluentd
+docker rmi jfrog-efk-logstash
