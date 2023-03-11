@@ -31,7 +31,6 @@ services:
     build:
       context: fluentd/
       args:
-        ELK_VERSION: $ELK_VERSION
         JF_PRODUCT_DATA_INTERNAL: "/opt/jfrog/artifactory/var"
         ELASTIC_HOST: "elasticsearch"
         ELASTIC_PORT: 9200
@@ -39,6 +38,16 @@ services:
         ELASTIC_PASSWORD: changeme
         ELASTIC_SCHEME: http
         ELASTIC_SSL_VERIFY: false
+        
+        JF_JPD_URL: "xxx"
+        JF_JPD_USER_NAME: "xxx"
+        JF_JPD_API_KEY: "xxx"
+        JF_JPD_TOKEN: "xxx"
+
+        # JF_JPD_URL: "${JF_JPD_URL}"
+        # JF_JPD_USER_NAME: "${JF_JPD_USER_NAME}"
+        # JF_JPD_API_KEY: "${JF_JPD_API_KEY}"
+        # JF_JPD_TOKEN: "${JF_JPD_TOKEN}"
     volumes:
       - type: bind
       # docker desktop > resources > file sharing > add below path
